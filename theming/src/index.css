@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  transition: all .4s ease-in-out;
+}
+  :root[data-theme="light"] {
+    --bgColor: #E0EAF5;
+    --fgColor: #112A46;
+    --borderColor: rgba(17, 42, 70, .3);
+    --orangeBg: linear-gradient(to bottom,hsl(32, 100%, 70%),hsl(338, 78%, 84%));
+  }
+  :root[data-theme="dark"] {
+    --bgColor: #020202;
+    --fgColor: rgb(243, 246, 250);
+    --borderColor: rgba(243, 246, 250, .3);
+    --orangeBg: linear-gradient(to bottom,#ff8a00,#e52e71);
+  }
+
+
+html {
+  background: var(--bgColor);
+  color: var(--fgColor);
+}
+
+body {
+  background: transparent;
+}
+
+.orangeBg {
+  background: var(--orangeBg);
+}
