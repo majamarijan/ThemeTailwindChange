@@ -1,50 +1,93 @@
-# React + TypeScript + Vite
+React - Tailwind Theme Changer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- First install vite project:
+  <code>npm install vite@latest --template react-ts</code>
 
-## Expanding the ESLint configuration
+- Install dependencies:
+  <code>npm i</code>
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Add tailwindcss:
+  <code>npm install -D tailwindcss</code>
 
-- Configure the top-level `parserOptions` property like this:
+- Initialize tailwind.config.js:
+  <code>npx tailwindcss init</code>
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- Enter the following inside tailwind.config.css: 
+  
+    <pre>
+    /** @type {import('tailwindcss').Config} */
+    export default {
+      👉content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+      theme: {
+        extend: {},
+        plugins: [],
+      }
+    };
+</pre>
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- In `./vite.config.ts` add:
+  
+  <pre>
+  import tailwindcss from 'tailwindcss'
+  export default defineConfig({
+  plugins: [react()],
+  👉css: {
+    postcss: {
+      plugins: [tailwindcss()],
+      },
+    }
+  })
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+  </pre>
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- Insert in `./src/index.css`:
+  
+  <pre>
+  👉@tailwind base;
+  👉@tailwind components;
+  👉@tailwind utilities;
+  </pre>
+
+> Be sure to check in `./src/main.tsx` that `index.css` is imported
+
+
+## Set Color theme
+
+- In `./src/index.css` setup css variables on the `:root` element
+
+- In `./tailwind.config.js` fetch that variables (so you can use it on the className attr) in  `theme` 👉 `extend` 👉 `colors`:
+  
+  <pre>
+  theme:{
+    colors: {
+        propertyName: 'var(--cssVariable)',
+        ...
+      },
+    backgroundImage: {//for bg images, linear-gradients, etc},
+    ////....///
+    }
+  </pre>
+
+## Use Color Theme
+
+- Set initialy on the `root [html]` in `./src/main.tsx`:
+  
+  <pre>
+  const html = document.querySelector('html');
+  html?.setAttribute('data-theme', 'light');
+  ///////////////or
+  html?.classList.add('theme', 'light');
+  </pre>
+
+- Configure element and handler that will control theme change.
+  
+- Use defined properties for different themes from tailwind.config.js as:
+
+    ```
+    <div className='text-textColor bg-bgColor'>
+      /////....../////////
+    </div>
+    ```
